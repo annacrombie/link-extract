@@ -1,3 +1,4 @@
+extern crate url;
 extern crate regex;
 extern crate clap;
 #[macro_use]
