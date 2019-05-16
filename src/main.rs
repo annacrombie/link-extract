@@ -9,10 +9,12 @@ use std::io;
 use std::fs;
 
 use clap::{Arg, App, ArgMatches};
-use regex::Regex;
+use regex::{Regex};
+use url::Url;
 
 lazy_static! {
-    static ref RE: Regex = Regex::new(r"(https?://[[:alpha:][:digit:][+#/\&\?;=%_\-\.{},]]+)").unwrap();
+    static ref RE: Regex = Regex::new(r#"<a href="(.*?)".*?>(.*?)</a>"#).unwrap();
+    static ref SANITIZE: Regex = Regex::new(r#"(<.*>)*(.*)(<.*>)*"#).unwrap();
 }
 
 fn parse_options() -> ArgMatches<'static> {
@@ -51,6 +53,18 @@ fn main() {
         };
 
     for cap in RE.captures_iter(&string) {
-        println!("{}", &cap[0]);
+        let url = Url::parse(&cap[1]);
+        //let title = SANITIZE.captures_iter(&cap[2])
+        //    .take(1)
+        //    .map(|e| {
+        //         println!("{:?}", &cap[2]);
+        //         println!("{:?}", &e);
+        //         e[0].to_string() })
+        //    .collect::<String>();
+
+        match url {
+            Ok(_) => println!("{}\n{}", &cap[2], &cap[1]),
+            Err(_) => {}
+        }
     }
 }
