@@ -13,7 +13,7 @@ use regex::{Regex};
 use url::Url;
 
 lazy_static! {
-    static ref RE: Regex = Regex::new(r#"<a href="(.*?)".*?>(.*?)</a>"#).unwrap();
+    static ref RE: Regex = Regex::new(r#"<a.*?href="(.*?)".*?>(.*?)</a>"#).unwrap();
     static ref SANITIZE: Regex = Regex::new(r#"(<.*>)*(.*)(<.*>)*"#).unwrap();
 }
 
